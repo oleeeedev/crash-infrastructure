@@ -27,7 +27,7 @@ provider "gitlab" {
 }
 
 provider "github" {
-  owner = "oleeeedev"
+  owner = "crash-tech"
   app_auth {
     id = ""
     installation_id = ""

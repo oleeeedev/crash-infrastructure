@@ -1,0 +1,92 @@
+stages:
+  - terraform-plan
+  - terraform-apply
+
+default:
+  tags:
+    - infra
+
+.ssh:
+  before_script:
+    - IFS=
+    - mkdir ~/.ssh
+    - touch ~/.ssh/known_hosts
+    - echo $C0_SSH_KNOWN_HOSTS >> ~/.ssh/known_hosts
+    - eval `ssh-agent -s`
+    - echo "$C0_PIPELINE_SSH_KEY" | tr -d '\r' | ssh-add -
+
+.tf:
+  image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+  before_script:
+    - cd $TF_ROOT
+
+.tf-plan:
+  extends:
+    - .tf
+  stage: terraform-plan
+  resource_group: tf/$TF_STATE_NAME
+  script:
+    - gitlab-terraform plan | tee output
+    - gitlab-terraform plan-json
+    - |
+      echo -e "\e[0Ksection_start:`date +%s`:glpa_summary\r\e[0KHeader of the summary"
+      grep -E "Plan:|No changes" output | sed -r "s/[[:cntrl:]]\[[0-9]{1,3}m//g"
+      echo -e "\e[0Ksection_end:`date +%s`:glpa_summary\r\e[0K"
+  artifacts:
+    expire_in: 7 days
+    paths:
+      - $TF_ROOT/plan.cache
+    reports:
+      terraform: $TF_ROOT/plan.json
+
+.tf-apply:
+  extends:
+    - .tf
+  stage: terraform-apply
+  resource_group: tf/$TF_STATE_NAME
+  script:
+    - gitlab-terraform apply $TF_ARGS | tee output
+    - |
+      echo -e "\e[0Ksection_start:`date +%s`:glpa_summary\r\e[0KHeader of the summary"
+      grep "Apply complete!" output | sed -r "s/[[:cntrl:]]\[[0-9]{1,3}m//g"
+      echo -e "\e[0Ksection_end:`date +%s`:glpa_summary\r\e[0K"
+  environment:
+    name: $TF_STATE_NAME
+    deployment_tier: production
+  rules:
+    - if: $C0_GH_REF == "refs/heads/main"
+      when: delayed
+      start_in: 2 min
+
+tf-plan:main:
+  extends:
+    - .tf-plan
+  variables:
+    TF_STATE_NAME: main
+    TF_ROOT: 'envs/main'
+
+tf-apply:main:
+  extends:
+    - .tf-apply
+  needs:
+    - tf-plan:main
+  variables: !reference ["tf-plan:main", variables]
+
+tf-plan:server_administration:
+  extends:
+    - .tf-plan
+  before_script:
+    - !reference [.ssh, before_script]
+    - !reference [.tf, before_script]
+  variables:
+    TF_STATE_NAME: server_administration
+    TF_ROOT: 'envs/server_administration'
+    TF_ARGS: '-parallelism=1'
+
+tf-apply:server_administration:
+  extends:
+    - .tf-apply
+  before_script: !reference [tf-plan:server_administration, before_script]
+  needs:
+    - tf-plan:server_administration
+  variables: !reference [tf-plan:server_administration, variables]

@@ -22,7 +22,7 @@ resource "tls_cert_request" "this" {
 
   subject {
     common_name  = ""
-    organization = "crash-tech"
+    organization = "crashlang-tech"
   }
 }
 

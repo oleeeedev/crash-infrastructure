@@ -20,52 +20,52 @@ resource "random_bytes" "utils_key" {
 }
 
 data "gitlab_project_variable" "discord_client_id" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_DISCORD_CLIENT_ID"
 }
 
 data "gitlab_project_variable" "discord_client_secret" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_DISCORD_CLIENT_SECRET"
 }
 
 data "gitlab_project_variable" "smtp_host" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_SMTP_HOST"
 }
 
 data "gitlab_project_variable" "smtp_username" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_SMTP_USERNAME"
 }
 
 data "gitlab_project_variable" "smtp_password" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_SMTP_PASSWORD"
 }
 
 data "gitlab_project_variable" "smtp_from_email" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_SMTP_FROM_EMAIL"
 }
 
 data "gitlab_project_variable" "github_app_id" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_GITHUB_APP_ID"
 }
 
 data "gitlab_project_variable" "github_app_private_key" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_GITHUB_APP_PRIVATE_KEY"
 }
 
 data "gitlab_project_variable" "github_client_id" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_GITHUB_CLIENT_ID"
 }
 
 data "gitlab_project_variable" "github_client_secret" {
-  project = "crash-tech/secret-manager"
+  project = "crashlang-tech/secret-manager"
   key     = "OUTLINE_GITHUB_CLIENT_SECRET"
 }
 

@@ -29,8 +29,8 @@ module "docs_pages" {
 
   cloudflare_domain_name = "docs"
   cloudflare_zone_id = data.cloudflare_zone.main_domain.id
-  gitlab_project_path = "crash-tech/development/telescopium"
-  gitlab_unique_pages_url = "docs-crash-tech-c91f18c0d2259c041bf05138b194e6bb082059fe38eff2e.gitlab.io"
+  gitlab_project_path = "crashlang-tech/development/telescopium"
+  gitlab_unique_pages_url = "docs-crashlang-tech-c91f18c0d2259c041bf05138b194e6bb082059fe38eff2e.gitlab.io"
 }
 
 module "landing_page_pages" {
@@ -38,12 +38,12 @@ module "landing_page_pages" {
 
   cloudflare_domain_name = "@"
   cloudflare_zone_id = data.cloudflare_zone.main_domain.id
-  gitlab_project_path = "crash-tech/development/landing-page"
-  gitlab_unique_pages_url = "landing-page-crash-tech-development-b2dc2848e053fa1893b1dfbb1ba.gitlab.io"
+  gitlab_project_path = "crashlang-tech/development/landing-page"
+  gitlab_unique_pages_url = "landing-page-crashlang-tech-development-b2dc2848e053fa1893b1dfbb1ba.gitlab.io"
 }
 
 resource "cloudflare_record" "github_verification" {
-  name    = "_github-challenge-crash-tech-org"
+  name    = "_github-challenge-crashlang-tech-org"
   type    = "TXT"
   zone_id = data.cloudflare_zone.main_domain.id
   content = "e3447326f4"

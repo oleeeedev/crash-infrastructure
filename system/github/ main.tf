@@ -8,7 +8,7 @@ terraform {
 }
 
 data "github_repositories" "repositories" {
-  query = "org:crash-tech"
+  query = "org:crashlang-tech"
 }
 
 module "global_labels" {
